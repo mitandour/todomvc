@@ -12,8 +12,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var classNames = require("classnames");
 var React = require("react");
-var constants_1 = require("./constants");
-var utils_1 = require("./utils");
+var constants_1 = require("../constants");
+var utils_1 = require("../utils");
 var TodoFooter = (function (_super) {
     __extends(TodoFooter, _super);
     function TodoFooter() {

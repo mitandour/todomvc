@@ -13,7 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var classNames = require("classnames");
 var React = require("react");
 var ReactDOM = require("react-dom");
-var constants_1 = require("./constants");
+var constants_1 = require("../constants");
 var TodoItem = (function (_super) {
     __extends(TodoItem, _super);
     function TodoItem(props) {

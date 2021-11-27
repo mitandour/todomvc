@@ -1,9 +1,10 @@
 {
     "compilerOptions": {
+        "outDir": "build/dist",
         "target": "es5",
         "module": "commonjs",
         "moduleResolution": "node",
-        "isolatedModules": false,
+        "isolatedModules": true,
         "jsx": "react",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
@@ -20,13 +21,13 @@
         "!node_modules/**"
     ],
     "files": [
-        "constants.ts",
-        "interfaces.d.ts",
-        "todoModel.ts",
-        "utils.ts",
-        "app.tsx",
-        "footer.tsx",
-        "todoItem.tsx"
+        "src/constants/index.ts",
+        "src/services/interfaces.d.ts",
+        "src/services/impl/todoModel.ts",
+        "src/utils.ts",
+        "src/app.tsx",
+        "src/components/footer.tsx",
+        "src/components/todoItem.tsx"
     ],
     "exclude": [],
     "baseUrl": "types",

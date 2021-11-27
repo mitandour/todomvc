@@ -13,9 +13,9 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var ReactDOM = require("react-dom");
-var todoModel_1 = require("./todoModel");
-var footer_1 = require("./footer");
-var todoItem_1 = require("./todoItem");
+var todoModel_1 = require("./services/impl/todoModel");
+var footer_1 = require("./components/footer");
+var todoItem_1 = require("./components/todoItem");
 var constants_1 = require("./constants");
 var TodoApp = (function (_super) {
     __extends(TodoApp, _super);
@@ -119,21 +119,7 @@ function render() {
 model.subscribe(render);
 render();
 
-},{"./constants":2,"./footer":3,"./todoItem":4,"./todoModel":5,"react":17,"react-dom":14}],2:[function(require,module,exports){
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var ALL_TODOS = 'all';
-exports.ALL_TODOS = ALL_TODOS;
-var ACTIVE_TODOS = 'active';
-exports.ACTIVE_TODOS = ACTIVE_TODOS;
-var COMPLETED_TODOS = 'completed';
-exports.COMPLETED_TODOS = COMPLETED_TODOS;
-var ENTER_KEY = 13;
-exports.ENTER_KEY = ENTER_KEY;
-var ESCAPE_KEY = 27;
-exports.ESCAPE_KEY = ESCAPE_KEY;
-
-},{}],3:[function(require,module,exports){
+},{"./components/footer":2,"./components/todoItem":3,"./constants":4,"./services/impl/todoModel":5,"react":17,"react-dom":14}],2:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -148,8 +134,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var classNames = require("classnames");
 var React = require("react");
-var constants_1 = require("./constants");
-var utils_1 = require("./utils");
+var constants_1 = require("../constants");
+var utils_1 = require("../utils");
 var TodoFooter = (function (_super) {
     __extends(TodoFooter, _super);
     function TodoFooter() {
@@ -183,7 +169,7 @@ var TodoFooter = (function (_super) {
 }(React.Component));
 exports.TodoFooter = TodoFooter;
 
-},{"./constants":2,"./utils":6,"classnames":7,"react":17}],4:[function(require,module,exports){
+},{"../constants":4,"../utils":6,"classnames":7,"react":17}],3:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -199,7 +185,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var classNames = require("classnames");
 var React = require("react");
 var ReactDOM = require("react-dom");
-var constants_1 = require("./constants");
+var constants_1 = require("../constants");
 var TodoItem = (function (_super) {
     __extends(TodoItem, _super);
     function TodoItem(props) {
@@ -262,10 +248,24 @@ var TodoItem = (function (_super) {
 }(React.Component));
 exports.TodoItem = TodoItem;
 
-},{"./constants":2,"classnames":7,"react":17,"react-dom":14}],5:[function(require,module,exports){
+},{"../constants":4,"classnames":7,"react":17,"react-dom":14}],4:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var utils_1 = require("./utils");
+var ALL_TODOS = 'all';
+exports.ALL_TODOS = ALL_TODOS;
+var ACTIVE_TODOS = 'active';
+exports.ACTIVE_TODOS = ACTIVE_TODOS;
+var COMPLETED_TODOS = 'completed';
+exports.COMPLETED_TODOS = COMPLETED_TODOS;
+var ENTER_KEY = 13;
+exports.ENTER_KEY = ENTER_KEY;
+var ESCAPE_KEY = 27;
+exports.ESCAPE_KEY = ESCAPE_KEY;
+
+},{}],5:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var utils_1 = require("../../utils");
 var TodoModel = (function () {
     function TodoModel(key) {
         this.key = key;
@@ -323,7 +323,7 @@ var TodoModel = (function () {
 }());
 exports.TodoModel = TodoModel;
 
-},{"./utils":6}],6:[function(require,module,exports){
+},{"../../utils":6}],6:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Utils = (function () {

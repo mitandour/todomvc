@@ -12,9 +12,9 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var ReactDOM = require("react-dom");
-var todoModel_1 = require("./todoModel");
-var footer_1 = require("./footer");
-var todoItem_1 = require("./todoItem");
+var todoModel_1 = require("./services/impl/todoModel");
+var footer_1 = require("./components/footer");
+var todoItem_1 = require("./components/todoItem");
 var constants_1 = require("./constants");
 var TodoApp = (function (_super) {
     __extends(TodoApp, _super);

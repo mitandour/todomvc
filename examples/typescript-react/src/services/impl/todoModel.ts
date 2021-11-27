@@ -3,9 +3,9 @@
 /*jshint trailing:false */
 /*jshint newcap:false */
 
-/// <reference path="./interfaces.d.ts"/>
+/// <reference path="../interfaces.d.ts"/>
 
-import { Utils } from "./utils";
+import { Utils } from "../../utils";
 
 // Generic "model" object. You can use whatever
 // framework you want. For this application it

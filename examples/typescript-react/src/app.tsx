@@ -4,14 +4,14 @@
 /*jshint newcap:false */
 /*global React, Router*/
 
-/// <reference path="./interfaces.d.ts"/>
+/// <reference path="./services/interfaces.d.ts"/>
 
 declare var Router;
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { TodoModel } from "./todoModel";
-import { TodoFooter } from "./footer";
-import { TodoItem } from "./todoItem";
+import { TodoModel } from "./services/impl/todoModel";
+import { TodoFooter } from "./components/footer";
+import { TodoItem } from "./components/todoItem";
 import { ALL_TODOS, ACTIVE_TODOS, COMPLETED_TODOS, ENTER_KEY } from "./constants";
 
 class TodoApp extends React.Component<IAppProps, IAppState> {

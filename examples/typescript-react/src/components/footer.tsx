@@ -4,12 +4,12 @@
 /*jshint newcap:false */
 /*global React */
 
-/// <reference path="./interfaces.d.ts"/>
+/// <reference path="../services/interfaces.d.ts"/>
 
 import * as classNames from "classnames";
 import * as React from "react";
-import { ALL_TODOS, ACTIVE_TODOS, COMPLETED_TODOS } from "./constants";
-import { Utils } from "./utils";
+import { ALL_TODOS, ACTIVE_TODOS, COMPLETED_TODOS } from "../constants";
+import { Utils } from "../utils";
 
 class TodoFooter extends React.Component<ITodoFooterProps, {}> {
 
