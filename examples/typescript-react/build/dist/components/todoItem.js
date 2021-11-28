@@ -62,14 +62,40 @@ var TodoItem = (function (_super) {
     };
     TodoItem.prototype.render = function () {
         var _this = this;
+        var badge = {
+            color: "inherit",
+            margin: "3px",
+            padding: "3px 7px",
+            textDecoration: "none",
+            border: "1px solid #bbb",
+            borderRadius: "10px",
+            fontSize: "15px"
+        };
+        var item = {
+            display: "flex",
+            FlexDirectionProperty: "row",
+            justifyContent: "space-between",
+            alignItems: "center"
+        };
+        var labels = {
+            display: "flex",
+            FlexDirectionProperty: "row",
+            justifyContent: "flex-end"
+        };
         return (React.createElement("li", { className: classNames({
                 completed: this.props.todo.completed,
                 editing: this.props.editing
             }) },
             React.createElement("div", { className: "view" },
                 React.createElement("input", { className: "toggle", type: "checkbox", checked: this.props.todo.completed, onChange: this.props.onToggle }),
-                React.createElement("label", { onDoubleClick: function (e) { return _this.handleEdit(); } }, this.props.todo.title),
-                React.createElement("span", { className: classNames({ selected: true }) }, this.props.todo.tags && this.props.todo.tags.map(function (tag) { return (tag.label); })),
+                React.createElement("label", { style: item, onDoubleClick: function (e) { return _this.handleEdit(); } },
+                    React.createElement("span", null,
+                        " ",
+                        this.props.todo.title,
+                        " "),
+                    React.createElement("span", { style: labels }, this.props.todo.tags && this.props.todo.tags.map(function (tag) { return (React.createElement("label", { style: badge },
+                        tag.label.substring(1),
+                        " ")); }))),
                 React.createElement("button", { className: "destroy", onClick: this.props.onDestroy })),
             React.createElement("input", { ref: "editField", className: "edit", value: this.state.editText, onBlur: function (e) { return _this.handleSubmit(e); }, onChange: function (e) { return _this.handleChange(e); }, onKeyDown: function (e) { return _this.handleKeyDown(e); } })));
     };

@@ -1,20 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="33e537ea-2c3b-4fd6-a89c-f7eba8af6f29" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/examples/typescript-react/.vscode/launch.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/typescript-react/build/dist/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/typescript-react/build/dist/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/typescript-react/build/dist/bundle.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/typescript-react/build/dist/bundle.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/typescript-react/build/dist/components/todoItem.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/typescript-react/build/dist/components/todoItem.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/typescript-react/build/dist/services/impl/todoModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/typescript-react/build/dist/services/impl/todoModel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/typescript-react/build/dist/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/typescript-react/build/dist/utils.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/typescript-react/src/app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/examples/typescript-react/src/app.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/typescript-react/src/components/todoItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/examples/typescript-react/src/components/todoItem.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/typescript-react/src/services/impl/todoModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/examples/typescript-react/src/services/impl/todoModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/typescript-react/src/services/interfaces.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/examples/typescript-react/src/services/interfaces.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/typescript-react/src/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/examples/typescript-react/src/utils.ts" afterDir="false" />
-    </list>
+    <list default="true" id="33e537ea-2c3b-4fd6-a89c-f7eba8af6f29" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

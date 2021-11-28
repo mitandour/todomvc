@@ -79,6 +79,27 @@ class TodoItem extends React.Component<ITodoItemProps, ITodoItemState> {
   }
 
   public render() {
+    const badge = {
+      color: "inherit",
+      margin: "3px",
+      padding: "3px 7px",
+      textDecoration: "none",
+      border: "1px solid #bbb",
+      borderRadius: "10px",
+      fontSize:"15px"
+    }
+    const item = {
+      display: "flex",
+      FlexDirectionProperty: "row",
+      justifyContent: "space-between",
+      alignItems: "center"
+    }
+    const labels = {
+      display: "flex",
+      FlexDirectionProperty: "row",
+      justifyContent:"flex-end"
+    }
+
     return (
       <li className={classNames({
         completed: this.props.todo.completed,
@@ -91,12 +112,12 @@ class TodoItem extends React.Component<ITodoItemProps, ITodoItemState> {
             checked={this.props.todo.completed}
             onChange={this.props.onToggle}
           />
-          <label onDoubleClick={ e => this.handleEdit() }>
-            {this.props.todo.title}
+          <label style={item} onDoubleClick={ e => this.handleEdit() }>
+            <span > {this.props.todo.title} </span>
+            <span style={labels}>
+              { this.props.todo.tags && this.props.todo.tags.map(tag => (<label style={badge}>{tag.label.substring(1)} </label>))}
+            </span>
           </label>
-          <span className={classNames({selected: true})}>
-            { this.props.todo.tags && this.props.todo.tags.map(tag => (tag.label))}
-          </span>
           <button className="destroy" onClick={this.props.onDestroy} />
         </div>
         <input
