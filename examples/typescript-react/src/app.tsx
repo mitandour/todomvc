@@ -69,8 +69,8 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
     this.setState({editing: todo.id});
   }
 
-  public save(todoToSave : ITodo, text : String) {
-    this.props.model.save(todoToSave, text);
+  public save(todoToSave : ITodo, tagsToSave: ITag[] ,text : String) {
+    this.props.model.save(todoToSave, tagsToSave, text);
     this.setState({editing: null});
   }
 
@@ -81,6 +81,9 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
   public clearCompleted() {
     this.props.model.clearCompleted();
   }
+
+
+
 
   public render() {
     var footer;
@@ -107,7 +110,7 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
           onDestroy={this.destroy.bind(this, todo)}
           onEdit={this.edit.bind(this, todo)}
           editing={this.state.editing === todo.id}
-          onSave={this.save.bind(this, todo)}
+          onSave={this.save.bind(this, todo, todo.tags)}
           onCancel={ e => this.cancel() }
         />
       );
@@ -129,7 +132,7 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
           count={activeTodoCount}
           completedCount={completedCount}
           nowShowing={this.state.nowShowing}
-          onClearCompleted={ e=> this.clearCompleted() }
+          onClearCompleted={ e => this.clearCompleted() }
         />;
     }
 

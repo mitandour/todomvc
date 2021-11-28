@@ -61,8 +61,8 @@ var TodoApp = (function (_super) {
     TodoApp.prototype.edit = function (todo) {
         this.setState({ editing: todo.id });
     };
-    TodoApp.prototype.save = function (todoToSave, text) {
-        this.props.model.save(todoToSave, text);
+    TodoApp.prototype.save = function (todoToSave, tagsToSave, text) {
+        this.props.model.save(todoToSave, tagsToSave, text);
         this.setState({ editing: null });
     };
     TodoApp.prototype.cancel = function () {
@@ -87,7 +87,7 @@ var TodoApp = (function (_super) {
             }
         });
         var todoItems = shownTodos.map(function (todo) {
-            return (React.createElement(todoItem_1.TodoItem, { key: todo.id, todo: todo, onToggle: _this.toggle.bind(_this, todo), onDestroy: _this.destroy.bind(_this, todo), onEdit: _this.edit.bind(_this, todo), editing: _this.state.editing === todo.id, onSave: _this.save.bind(_this, todo), onCancel: function (e) { return _this.cancel(); } }));
+            return (React.createElement(todoItem_1.TodoItem, { key: todo.id, todo: todo, onToggle: _this.toggle.bind(_this, todo), onDestroy: _this.destroy.bind(_this, todo), onEdit: _this.edit.bind(_this, todo), editing: _this.state.editing === todo.id, onSave: _this.save.bind(_this, todo, todo.tags), onCancel: function (e) { return _this.cancel(); } }));
         });
         var activeTodoCount = todos.reduce(function (accum, todo) {
             return todo.completed ? accum : accum + 1;
@@ -241,6 +241,7 @@ var TodoItem = (function (_super) {
             React.createElement("div", { className: "view" },
                 React.createElement("input", { className: "toggle", type: "checkbox", checked: this.props.todo.completed, onChange: this.props.onToggle }),
                 React.createElement("label", { onDoubleClick: function (e) { return _this.handleEdit(); } }, this.props.todo.title),
+                React.createElement("span", { className: classNames({ selected: true }) }, this.props.todo.tags && this.props.todo.tags.map(function (tag) { return (tag.label); })),
                 React.createElement("button", { className: "destroy", onClick: this.props.onDestroy })),
             React.createElement("input", { ref: "editField", className: "edit", value: this.state.editText, onBlur: function (e) { return _this.handleSubmit(e); }, onChange: function (e) { return _this.handleChange(e); }, onKeyDown: function (e) { return _this.handleKeyDown(e); } })));
     };
@@ -277,13 +278,19 @@ var TodoModel = (function () {
     };
     TodoModel.prototype.inform = function () {
         utils_1.Utils.store(this.key, this.todos);
-        this.onChanges.forEach(function (cb) { cb(); });
+        this.onChanges.forEach(function (cb) {
+            cb();
+        });
     };
     TodoModel.prototype.addTodo = function (title) {
+        var tags = utils_1.Utils.extractTags(title);
         this.todos = this.todos.concat({
             id: utils_1.Utils.uuid(),
-            title: title,
-            completed: false
+            title: utils_1.Utils.extractTodo(title),
+            completed: false,
+            tags: tags.length != 0 ? tags.map(function (tag) {
+                return { id: utils_1.Utils.uuid(), label: tag };
+            }) : null,
         });
         this.inform();
     };
@@ -295,9 +302,9 @@ var TodoModel = (function () {
     };
     TodoModel.prototype.toggle = function (todoToToggle) {
         this.todos = this.todos.map(function (todo) {
-            return todo !== todoToToggle ?
-                todo :
-                utils_1.Utils.extend({}, todo, { completed: !todo.completed });
+            return todo !== todoToToggle
+                ? todo
+                : utils_1.Utils.extend({}, todo, { completed: !todo.completed });
         });
         this.inform();
     };
@@ -307,9 +314,11 @@ var TodoModel = (function () {
         });
         this.inform();
     };
-    TodoModel.prototype.save = function (todoToSave, text) {
+    TodoModel.prototype.save = function (todoToSave, tagsToSave, text) {
         this.todos = this.todos.map(function (todo) {
-            return todo !== todoToSave ? todo : utils_1.Utils.extend({}, todo, { title: text });
+            return todo !== todoToSave
+                ? todo
+                : utils_1.Utils.extend({}, todo, { title: text });
         });
         this.inform();
     };
@@ -331,19 +340,18 @@ var Utils = (function () {
     }
     Utils.uuid = function () {
         var i, random;
-        var uuid = '';
+        var uuid = "";
         for (i = 0; i < 32; i++) {
-            random = Math.random() * 16 | 0;
+            random = (Math.random() * 16) | 0;
             if (i === 8 || i === 12 || i === 16 || i === 20) {
-                uuid += '-';
+                uuid += "-";
             }
-            uuid += (i === 12 ? 4 : (i === 16 ? (random & 3 | 8) : random))
-                .toString(16);
+            uuid += (i === 12 ? 4 : i === 16 ? (random & 3) | 8 : random).toString(16);
         }
         return uuid;
     };
     Utils.pluralize = function (count, word) {
-        return count === 1 ? word : word + 's';
+        return count === 1 ? word : word + "s";
     };
     Utils.store = function (namespace, data) {
         if (data) {
@@ -367,6 +375,15 @@ var Utils = (function () {
             }
         }
         return newObj;
+    };
+    Utils.extractTags = function (todo) {
+        return todo.split(" ").filter(function (word) { return word.charAt(0).match("@"); });
+    };
+    Utils.extractTodo = function (todo) {
+        return todo
+            .split(" ")
+            .filter(function (word) { return !word.charAt(0).match("@"); })
+            .join(" ");
     };
     return Utils;
 }());

@@ -12,13 +12,19 @@ var TodoModel = (function () {
     };
     TodoModel.prototype.inform = function () {
         utils_1.Utils.store(this.key, this.todos);
-        this.onChanges.forEach(function (cb) { cb(); });
+        this.onChanges.forEach(function (cb) {
+            cb();
+        });
     };
     TodoModel.prototype.addTodo = function (title) {
+        var tags = utils_1.Utils.extractTags(title);
         this.todos = this.todos.concat({
             id: utils_1.Utils.uuid(),
-            title: title,
-            completed: false
+            title: utils_1.Utils.extractTodo(title),
+            completed: false,
+            tags: tags.length != 0 ? tags.map(function (tag) {
+                return { id: utils_1.Utils.uuid(), label: tag };
+            }) : null,
         });
         this.inform();
     };
@@ -30,9 +36,9 @@ var TodoModel = (function () {
     };
     TodoModel.prototype.toggle = function (todoToToggle) {
         this.todos = this.todos.map(function (todo) {
-            return todo !== todoToToggle ?
-                todo :
-                utils_1.Utils.extend({}, todo, { completed: !todo.completed });
+            return todo !== todoToToggle
+                ? todo
+                : utils_1.Utils.extend({}, todo, { completed: !todo.completed });
         });
         this.inform();
     };
@@ -42,9 +48,11 @@ var TodoModel = (function () {
         });
         this.inform();
     };
-    TodoModel.prototype.save = function (todoToSave, text) {
+    TodoModel.prototype.save = function (todoToSave, tagsToSave, text) {
         this.todos = this.todos.map(function (todo) {
-            return todo !== todoToSave ? todo : utils_1.Utils.extend({}, todo, { title: text });
+            return todo !== todoToSave
+                ? todo
+                : utils_1.Utils.extend({}, todo, { title: text });
         });
         this.inform();
     };

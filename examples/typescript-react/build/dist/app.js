@@ -60,8 +60,8 @@ var TodoApp = (function (_super) {
     TodoApp.prototype.edit = function (todo) {
         this.setState({ editing: todo.id });
     };
-    TodoApp.prototype.save = function (todoToSave, text) {
-        this.props.model.save(todoToSave, text);
+    TodoApp.prototype.save = function (todoToSave, tagsToSave, text) {
+        this.props.model.save(todoToSave, tagsToSave, text);
         this.setState({ editing: null });
     };
     TodoApp.prototype.cancel = function () {
@@ -86,7 +86,7 @@ var TodoApp = (function (_super) {
             }
         });
         var todoItems = shownTodos.map(function (todo) {
-            return (React.createElement(todoItem_1.TodoItem, { key: todo.id, todo: todo, onToggle: _this.toggle.bind(_this, todo), onDestroy: _this.destroy.bind(_this, todo), onEdit: _this.edit.bind(_this, todo), editing: _this.state.editing === todo.id, onSave: _this.save.bind(_this, todo), onCancel: function (e) { return _this.cancel(); } }));
+            return (React.createElement(todoItem_1.TodoItem, { key: todo.id, todo: todo, onToggle: _this.toggle.bind(_this, todo), onDestroy: _this.destroy.bind(_this, todo), onEdit: _this.edit.bind(_this, todo), editing: _this.state.editing === todo.id, onSave: _this.save.bind(_this, todo, todo.tags), onCancel: function (e) { return _this.cancel(); } }));
         });
         var activeTodoCount = todos.reduce(function (accum, todo) {
             return todo.completed ? accum : accum + 1;

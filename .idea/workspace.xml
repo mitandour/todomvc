@@ -2,22 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="33e537ea-2c3b-4fd6-a89c-f7eba8af6f29" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/examples/typescript-react/js/app.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/typescript-react/js/app.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/typescript-react/js/bundle.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/typescript-react/js/constants.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/typescript-react/js/constants.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/typescript-react/js/footer.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/typescript-react/js/footer.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/typescript-react/js/interfaces.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/typescript-react/js/todoItem.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/typescript-react/js/todoItem.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/typescript-react/js/todoModel.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/typescript-react/js/todoModel.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/typescript-react/js/tsconfig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/typescript-react/js/utils.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/typescript-react/js/utils.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/typescript-react/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/examples/typescript-react/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/typescript-react/.vscode/launch.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/typescript-react/build/dist/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/typescript-react/build/dist/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/typescript-react/build/dist/bundle.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/typescript-react/build/dist/bundle.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/typescript-react/build/dist/components/todoItem.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/typescript-react/build/dist/components/todoItem.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/typescript-react/build/dist/services/impl/todoModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/typescript-react/build/dist/services/impl/todoModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/typescript-react/build/dist/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/typescript-react/build/dist/utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/typescript-react/src/app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/examples/typescript-react/src/app.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/typescript-react/src/components/todoItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/examples/typescript-react/src/components/todoItem.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/typescript-react/src/services/impl/todoModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/examples/typescript-react/src/services/impl/todoModel.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/typescript-react/src/services/interfaces.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/examples/typescript-react/src/services/interfaces.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/typescript-react/src/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/examples/typescript-react/src/utils.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,14 +21,24 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="21VKUyv72Nuhpitr98LGzucLtU7" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
   </component>
@@ -57,5 +63,8 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
 </project>
