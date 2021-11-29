@@ -22,10 +22,13 @@ var TodoModel = (function () {
             id: utils_1.Utils.uuid(),
             title: utils_1.Utils.extractTodo(title),
             completed: false,
-            tags: tags.length != 0 ? tags.map(function (tag) {
-                return { id: utils_1.Utils.uuid(), label: tag };
-            }) : null,
+            tags: tags.length != 0
+                ? tags.map(function (tag) {
+                    return { id: utils_1.Utils.uuid(), label: tag.substring(1) };
+                })
+                : null,
         });
+        console.log("from add", this.todos);
         this.inform();
     };
     TodoModel.prototype.toggleAll = function (checked) {
@@ -50,9 +53,9 @@ var TodoModel = (function () {
     };
     TodoModel.prototype.save = function (todoToSave, tagsToSave, text) {
         this.todos = this.todos.map(function (todo) {
-            return todo !== todoToSave
+            return todo.id !== todoToSave.id
                 ? todo
-                : utils_1.Utils.extend({}, todo, { title: text });
+                : utils_1.Utils.extend({}, todo, { title: text, tags: tagsToSave.slice() });
         });
         this.inform();
     };

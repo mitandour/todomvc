@@ -13,6 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var ReactDOM = require("react-dom");
 var todoModel_1 = require("./services/impl/todoModel");
+var tagModel_1 = require("./services/impl/tagModel");
 var footer_1 = require("./components/footer");
 var todoItem_1 = require("./components/todoItem");
 var constants_1 = require("./constants");
@@ -86,7 +87,7 @@ var TodoApp = (function (_super) {
             }
         });
         var todoItems = shownTodos.map(function (todo) {
-            return (React.createElement(todoItem_1.TodoItem, { key: todo.id, todo: todo, onToggle: _this.toggle.bind(_this, todo), onDestroy: _this.destroy.bind(_this, todo), onEdit: _this.edit.bind(_this, todo), editing: _this.state.editing === todo.id, onSave: _this.save.bind(_this, todo, todo.tags), onCancel: function (e) { return _this.cancel(); } }));
+            return (React.createElement(todoItem_1.TodoItem, { key: todo.id, todo: todo, tagModel: new tagModel_1.TagModel("todo-tags", todo, _this.props.model), onToggle: _this.toggle.bind(_this, todo), onDestroy: _this.destroy.bind(_this, todo), onEdit: _this.edit.bind(_this, todo), editing: _this.state.editing === todo.id, onSave: _this.save.bind(_this, todo, todo.tags), onCancel: function (e) { return _this.cancel(); } }));
         });
         var activeTodoCount = todos.reduce(function (accum, todo) {
             return todo.completed ? accum : accum + 1;

@@ -1,6 +1,7 @@
 {
   "private": true,
   "scripts": {
+    "clear": "rm -rf build",
     "build": "./node_modules/typescript/bin/tsc -p ./ && node ./node_modules/browserify/bin/cmd ./build/dist/app.js -o ./build/dist/bundle.js",
     "start": "node ./serve.js"
   },

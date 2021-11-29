@@ -10,9 +10,11 @@ declare var Router;
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { TodoModel } from "./services/impl/todoModel";
+import { TagModel } from "./services/impl/tagModel";
 import { TodoFooter } from "./components/footer";
 import { TodoItem } from "./components/todoItem";
 import { ALL_TODOS, ACTIVE_TODOS, COMPLETED_TODOS, ENTER_KEY } from "./constants";
+import { IAppProps, IAppState, ITag, ITodo } from "./services/interfaces";
 
 class TodoApp extends React.Component<IAppProps, IAppState> {
 
@@ -106,6 +108,7 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
         <TodoItem
           key={todo.id}
           todo={todo}
+          tagModel={new TagModel("todo-tags", todo, this.props.model)}
           onToggle={this.toggle.bind(this, todo)}
           onDestroy={this.destroy.bind(this, todo)}
           onEdit={this.edit.bind(this, todo)}

@@ -14,6 +14,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var ReactDOM = require("react-dom");
 var todoModel_1 = require("./services/impl/todoModel");
+var tagModel_1 = require("./services/impl/tagModel");
 var footer_1 = require("./components/footer");
 var todoItem_1 = require("./components/todoItem");
 var constants_1 = require("./constants");
@@ -87,7 +88,7 @@ var TodoApp = (function (_super) {
             }
         });
         var todoItems = shownTodos.map(function (todo) {
-            return (React.createElement(todoItem_1.TodoItem, { key: todo.id, todo: todo, onToggle: _this.toggle.bind(_this, todo), onDestroy: _this.destroy.bind(_this, todo), onEdit: _this.edit.bind(_this, todo), editing: _this.state.editing === todo.id, onSave: _this.save.bind(_this, todo, todo.tags), onCancel: function (e) { return _this.cancel(); } }));
+            return (React.createElement(todoItem_1.TodoItem, { key: todo.id, todo: todo, tagModel: new tagModel_1.TagModel("todo-tags", todo, _this.props.model), onToggle: _this.toggle.bind(_this, todo), onDestroy: _this.destroy.bind(_this, todo), onEdit: _this.edit.bind(_this, todo), editing: _this.state.editing === todo.id, onSave: _this.save.bind(_this, todo, todo.tags), onCancel: function (e) { return _this.cancel(); } }));
         });
         var activeTodoCount = todos.reduce(function (accum, todo) {
             return todo.completed ? accum : accum + 1;
@@ -119,7 +120,7 @@ function render() {
 model.subscribe(render);
 render();
 
-},{"./components/footer":2,"./components/todoItem":3,"./constants":4,"./services/impl/todoModel":5,"react":17,"react-dom":14}],2:[function(require,module,exports){
+},{"./components/footer":2,"./components/todoItem":4,"./constants":5,"./services/impl/tagModel":6,"./services/impl/todoModel":7,"react":19,"react-dom":16}],2:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -169,7 +170,7 @@ var TodoFooter = (function (_super) {
 }(React.Component));
 exports.TodoFooter = TodoFooter;
 
-},{"../constants":4,"../utils":6,"classnames":7,"react":17}],3:[function(require,module,exports){
+},{"../constants":5,"../utils":8,"classnames":9,"react":19}],3:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -181,58 +182,61 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var classNames = require("classnames");
 var React = require("react");
 var ReactDOM = require("react-dom");
-var constants_1 = require("../constants");
-var TodoItem = (function (_super) {
-    __extends(TodoItem, _super);
-    function TodoItem(props) {
+var TagItem = (function (_super) {
+    __extends(TagItem, _super);
+    function TagItem(props) {
         var _this = _super.call(this, props) || this;
-        _this.state = { editText: _this.props.todo.title };
+        _this.handleAddTag = function () {
+            _this.setState(function (prevState) { return (__assign({}, prevState, { addingTag: true })); });
+        };
+        _this.state = {
+            editLabel: _this.props.tag.label,
+            editingTag: false
+        };
         return _this;
     }
-    TodoItem.prototype.handleSubmit = function (event) {
-        var val = this.state.editText.trim();
+    TagItem.prototype.handleSubmit = function (event) {
+        var val = this.state.editLabel.trim();
         if (val) {
-            this.props.onSave(val);
-            this.setState({ editText: val });
+            this.props.onEdit(val);
+            this.setState({ editLabel: val });
         }
         else {
             this.props.onDestroy();
         }
     };
-    TodoItem.prototype.handleEdit = function () {
-        this.props.onEdit();
-        this.setState({ editText: this.props.todo.title });
+    TagItem.prototype.handleEdit = function () {
+        this.setState({ editLabel: this.props.tag.label });
+        this.props.onChange(this.state.editLabel);
     };
-    TodoItem.prototype.handleKeyDown = function (event) {
-        if (event.keyCode === constants_1.ESCAPE_KEY) {
-            this.setState({ editText: this.props.todo.title });
-            this.props.onCancel(event);
-        }
-        else if (event.keyCode === constants_1.ENTER_KEY) {
-            this.handleSubmit(event);
-        }
+    TagItem.prototype.handleKeyDown = function (event) {
     };
-    TodoItem.prototype.handleChange = function (event) {
+    TagItem.prototype.handleChange = function (event) {
         var input = event.target;
-        this.setState({ editText: input.value });
+        this.setState(function (prevState) { return (__assign({}, prevState, { editLabel: input.value })); });
     };
-    TodoItem.prototype.shouldComponentUpdate = function (nextProps, nextState) {
-        return (nextProps.todo !== this.props.todo ||
-            nextProps.editing !== this.props.editing ||
-            nextState.editText !== this.state.editText);
+    TagItem.prototype.handleEditTag = function () {
+        this.setState(function (prevState) { return (__assign({}, prevState, { editingTag: true })); });
     };
-    TodoItem.prototype.componentDidUpdate = function (prevProps) {
-        if (!prevProps.editing && this.props.editing) {
-            var node = ReactDOM.findDOMNode(this.refs["editField"]);
+    TagItem.prototype.componentDidUpdate = function (prevProps) {
+        if (!prevProps.editing && this.props.editing && this.state.editingTag) {
+            var node = ReactDOM.findDOMNode(this.refs["editTagField"]);
             node.focus();
             node.setSelectionRange(node.value.length, node.value.length);
         }
     };
-    TodoItem.prototype.render = function () {
+    TagItem.prototype.render = function () {
         var _this = this;
         var badge = {
             color: "inherit",
@@ -241,18 +245,156 @@ var TodoItem = (function (_super) {
             textDecoration: "none",
             border: "1px solid #bbb",
             borderRadius: "10px",
-            fontSize: "15px"
+            fontSize: "15px",
+            with: "auto"
         };
+        var miniButtons = {
+            width: "25px",
+            border: "1px solid black",
+            borderRadius: "50px",
+            cursor: "pointer"
+        };
+        return (React.createElement(React.Fragment, null,
+            React.createElement("label", { key: this.props.tag.id, style: badge, onDoubleClick: function (e) { return _this.handleEditTag(); } },
+                this.props.tag.label,
+                React.createElement("button", { style: miniButtons, onClick: this.props.onDestroy }, "x")),
+            this.state.editingTag &&
+                React.createElement("input", { ref: "editTagField", style: badge, value: this.state.editLabel, onBlur: function (e) { return _this.handleSubmit(e); }, onChange: function (e) { return _this.handleChange(e); } })));
+    };
+    return TagItem;
+}(React.Component));
+exports.TagItem = TagItem;
+
+},{"react":19,"react-dom":16}],4:[function(require,module,exports){
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var classNames = require("classnames");
+var React = require("react");
+var ReactDOM = require("react-dom");
+var constants_1 = require("../constants");
+var tagItem_1 = require("./tagItem");
+var TodoItem = (function (_super) {
+    __extends(TodoItem, _super);
+    function TodoItem(props) {
+        var _this = _super.call(this, props) || this;
+        _this.handleAddTag = function () {
+            _this.setState(function (prevState) { return (__assign({}, prevState, { addingTag: true })); });
+        };
+        _this.aggTag = function (val) {
+            _this.props.tagModel.addTag(val);
+        };
+        _this.destroyTag = function (tag) {
+            _this.props.tagModel.destroy(tag);
+        };
+        _this.onTagChange = function (values) {
+        };
+        _this.state = {
+            editText: _this.props.todo.title,
+            newLabel: "",
+            addingTag: false
+        };
+        return _this;
+    }
+    TodoItem.prototype.handleSubmit = function (event) {
+        var val = this.state.editText.trim();
+        if (val) {
+            this.props.onSave(val);
+            this.setState(function (prevState) { return (__assign({}, prevState, { editText: val })); });
+        }
+        else {
+            this.props.onDestroy();
+        }
+    };
+    TodoItem.prototype.handleEdit = function () {
+        var _this = this;
+        this.props.onEdit();
+        this.setState(function (prevState) { return (__assign({}, prevState, { editText: _this.props.todo.title })); });
+    };
+    TodoItem.prototype.handleKeyDown = function (event) {
+        var _this = this;
+        if (event.keyCode === constants_1.ESCAPE_KEY) {
+            this.setState(function (prevState) { return (__assign({}, prevState, { editText: _this.props.todo.title })); });
+            this.props.onCancel(event);
+        }
+        else if (event.keyCode === constants_1.ENTER_KEY) {
+            this.handleSubmit(event);
+        }
+    };
+    TodoItem.prototype.handleChange = function (event) {
+        var input = event.target;
+        this.setState(function (prevState) { return (__assign({}, prevState, { editText: input.value })); });
+    };
+    TodoItem.prototype.handleAddFieldChange = function (event) {
+        var input = event.target;
+        this.setState(function (prevState) { return (__assign({}, prevState, { newLabel: input.value })); });
+    };
+    TodoItem.prototype.editTag = function (tag, val) {
+        this.props.tagModel.edit(tag, val);
+    };
+    TodoItem.prototype.shouldComponentUpdate = function (nextProps, nextState) {
+        return (nextProps.todo !== this.props.todo ||
+            nextProps.editing !== this.props.editing ||
+            nextState.editText !== this.state.editText);
+    };
+    TodoItem.prototype.componentDidUpdate = function (prevProps, prevState) {
+        if (!prevProps.editing && this.props.editing) {
+            var node = ReactDOM.findDOMNode(this.refs["editField"]);
+            node.focus();
+            node.setSelectionRange(node.value.length, node.value.length);
+        }
+        if (this.state.addingTag) {
+            var node = ReactDOM.findDOMNode(this.refs["addField"]);
+            node.focus();
+            node.setSelectionRange(node.value.length, node.value.length);
+        }
+    };
+    TodoItem.prototype.render = function () {
+        var _this = this;
         var item = {
             display: "flex",
             FlexDirectionProperty: "row",
             justifyContent: "space-between",
-            alignItems: "center"
+            alignItems: "center",
+            maxWidth: "450px"
         };
         var labels = {
             display: "flex",
             FlexDirectionProperty: "row",
             justifyContent: "flex-end"
+        };
+        var badge = {
+            color: "inherit",
+            margin: "3px",
+            padding: "3px 7px",
+            textDecoration: "none",
+            border: "1px solid #bbb",
+            borderRadius: "10px",
+            fontSize: "15px",
+            with: "auto"
+        };
+        var miniButtons = {
+            width: "25px",
+            border: "1px solid black",
+            borderRadius: "50px",
+            cursor: "pointer"
         };
         return (React.createElement("li", { className: classNames({
                 completed: this.props.todo.completed,
@@ -265,9 +407,11 @@ var TodoItem = (function (_super) {
                         " ",
                         this.props.todo.title,
                         " "),
-                    React.createElement("span", { style: labels }, this.props.todo.tags && this.props.todo.tags.map(function (tag) { return (React.createElement("label", { style: badge },
-                        tag.label.substring(1),
-                        " ")); }))),
+                    React.createElement("span", { style: labels },
+                        this.props.todo.tags && this.props.todo.tags.map(function (tag) { return (React.createElement(tagItem_1.TagItem, { key: tag.id, tag: tag, editing: _this.props.editing, onChange: _this.onTagChange, onDestroy: _this.destroyTag.bind(_this, tag), onEdit: _this.editTag.bind(_this, tag) })); }),
+                        React.createElement("button", { style: miniButtons, onClick: this.handleAddTag }, "+"),
+                        this.state.addingTag &&
+                            React.createElement("input", { ref: "addField", style: badge, value: this.state.newLabel, onBlur: function (e) { return _this.aggTag.bind(_this, e.target.value); }, onChange: function (e) { return _this.handleAddFieldChange(e); } }))),
                 React.createElement("button", { className: "destroy", onClick: this.props.onDestroy })),
             React.createElement("input", { ref: "editField", className: "edit", value: this.state.editText, onBlur: function (e) { return _this.handleSubmit(e); }, onChange: function (e) { return _this.handleChange(e); }, onKeyDown: function (e) { return _this.handleKeyDown(e); } })));
     };
@@ -275,7 +419,7 @@ var TodoItem = (function (_super) {
 }(React.Component));
 exports.TodoItem = TodoItem;
 
-},{"../constants":4,"classnames":7,"react":17,"react-dom":14}],4:[function(require,module,exports){
+},{"../constants":5,"./tagItem":3,"classnames":9,"react":19,"react-dom":16}],5:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var ALL_TODOS = 'all';
@@ -289,7 +433,43 @@ exports.ENTER_KEY = ENTER_KEY;
 var ESCAPE_KEY = 27;
 exports.ESCAPE_KEY = ESCAPE_KEY;
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var utils_1 = require("../../utils");
+var todoModel_1 = require("../impl/todoModel");
+var todoModel = new todoModel_1.TodoModel("react-todos");
+var TagModel = (function () {
+    function TagModel(key, todo, model) {
+        this.key = key;
+        this.todo = todo;
+        this.tags = todo.tags;
+        this.todoModel = model;
+    }
+    TagModel.prototype.addTag = function (label) {
+        this.tags = this.tags.concat({
+            id: utils_1.Utils.uuid(),
+            label: label,
+        });
+        this.todoModel.save(this.todo, this.tags, this.todo.title);
+    };
+    TagModel.prototype.destroy = function (tag) {
+        this.tags = this.tags.filter(function (candidate) {
+            return candidate.id !== tag.id;
+        });
+        this.todoModel.save(this.todo, this.tags, this.todo.title);
+    };
+    TagModel.prototype.edit = function (tagToSave, label) {
+        this.tags = this.tags.map(function (tag) {
+            return tag !== tagToSave ? tag : utils_1.Utils.extend({}, tag, { label: label });
+        });
+        this.todoModel.save(this.todo, this.tags, this.todo.title);
+    };
+    return TagModel;
+}());
+exports.TagModel = TagModel;
+
+},{"../../utils":8,"../impl/todoModel":7}],7:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var utils_1 = require("../../utils");
@@ -314,10 +494,13 @@ var TodoModel = (function () {
             id: utils_1.Utils.uuid(),
             title: utils_1.Utils.extractTodo(title),
             completed: false,
-            tags: tags.length != 0 ? tags.map(function (tag) {
-                return { id: utils_1.Utils.uuid(), label: tag };
-            }) : null,
+            tags: tags.length != 0
+                ? tags.map(function (tag) {
+                    return { id: utils_1.Utils.uuid(), label: tag.substring(1) };
+                })
+                : null,
         });
+        console.log("from add", this.todos);
         this.inform();
     };
     TodoModel.prototype.toggleAll = function (checked) {
@@ -342,9 +525,9 @@ var TodoModel = (function () {
     };
     TodoModel.prototype.save = function (todoToSave, tagsToSave, text) {
         this.todos = this.todos.map(function (todo) {
-            return todo !== todoToSave
+            return todo.id !== todoToSave.id
                 ? todo
-                : utils_1.Utils.extend({}, todo, { title: text });
+                : utils_1.Utils.extend({}, todo, { title: text, tags: tagsToSave.slice() });
         });
         this.inform();
     };
@@ -358,7 +541,7 @@ var TodoModel = (function () {
 }());
 exports.TodoModel = TodoModel;
 
-},{"../../utils":6}],6:[function(require,module,exports){
+},{"../../utils":8}],8:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Utils = (function () {
@@ -415,7 +598,7 @@ var Utils = (function () {
 }());
 exports.Utils = Utils;
 
-},{}],7:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 /*!
   Copyright (c) 2017 Jed Watson.
   Licensed under the MIT License (MIT), see
@@ -469,7 +652,7 @@ exports.Utils = Utils;
 	}
 }());
 
-},{}],8:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /*
 object-assign
 (c) Sindre Sorhus
@@ -561,7 +744,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 	return to;
 };
 
-},{}],9:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -747,7 +930,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],10:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -842,7 +1025,7 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
 module.exports = checkPropTypes;
 
 }).call(this,require('_process'))
-},{"./lib/ReactPropTypesSecret":11,"_process":9}],11:[function(require,module,exports){
+},{"./lib/ReactPropTypesSecret":13,"_process":11}],13:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -856,7 +1039,7 @@ var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 
 module.exports = ReactPropTypesSecret;
 
-},{}],12:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 (function (process){
 /** @license React v16.7.0
  * react-dom.development.js
@@ -20945,7 +21128,7 @@ module.exports = reactDom;
 }
 
 }).call(this,require('_process'))
-},{"_process":9,"object-assign":8,"prop-types/checkPropTypes":10,"react":17,"scheduler":22,"scheduler/tracing":23}],13:[function(require,module,exports){
+},{"_process":11,"object-assign":10,"prop-types/checkPropTypes":12,"react":19,"scheduler":24,"scheduler/tracing":25}],15:[function(require,module,exports){
 /** @license React v16.7.0
  * react-dom.production.min.js
  *
@@ -21196,7 +21379,7 @@ void 0:t("40");return a._reactRootContainer?(Uh(function(){fi(null,null,a,!1,fun
 Ka,La,Ca.injectEventPluginsByName,qa,Ra,function(a){za(a,Qa)},Ib,Jb,Jd,Ea]}};function hi(a,b){di(a)?void 0:t("299","unstable_createRoot");return new ci(a,!0,null!=b&&!0===b.hydrate)}(function(a){var b=a.findFiberByHostInstance;return We(n({},a,{overrideProps:null,findHostInstanceByFiber:function(a){a=nd(a);return null===a?null:a.stateNode},findFiberByHostInstance:function(a){return b?b(a):null}}))})({findFiberByHostInstance:Ia,bundleType:0,version:"16.7.0",rendererPackageName:"react-dom"});
 var li={default:ki},mi=li&&ki||li;module.exports=mi.default||mi;
 
-},{"object-assign":8,"react":17,"scheduler":22}],14:[function(require,module,exports){
+},{"object-assign":10,"react":19,"scheduler":24}],16:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -21238,7 +21421,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/react-dom.development.js":12,"./cjs/react-dom.production.min.js":13,"_process":9}],15:[function(require,module,exports){
+},{"./cjs/react-dom.development.js":14,"./cjs/react-dom.production.min.js":15,"_process":11}],17:[function(require,module,exports){
 (function (process){
 /** @license React v16.7.0
  * react.development.js
@@ -23125,7 +23308,7 @@ module.exports = react;
 }
 
 }).call(this,require('_process'))
-},{"_process":9,"object-assign":8,"prop-types/checkPropTypes":10}],16:[function(require,module,exports){
+},{"_process":11,"object-assign":10,"prop-types/checkPropTypes":12}],18:[function(require,module,exports){
 /** @license React v16.7.0
  * react.production.min.js
  *
@@ -23151,7 +23334,7 @@ _currentValue:a,_currentValue2:a,_threadCount:0,Provider:null,Consumer:null};a.P
 if(null!=b){void 0!==b.ref&&(h=b.ref,f=K.current);void 0!==b.key&&(g=""+b.key);var l=void 0;a.type&&a.type.defaultProps&&(l=a.type.defaultProps);for(c in b)L.call(b,c)&&!M.hasOwnProperty(c)&&(d[c]=void 0===b[c]&&void 0!==l?l[c]:b[c])}c=arguments.length-2;if(1===c)d.children=e;else if(1<c){l=Array(c);for(var m=0;m<c;m++)l[m]=arguments[m+2];d.children=l}return{$$typeof:p,type:a.type,key:g,ref:h,props:d,_owner:f}},createFactory:function(a){var b=N.bind(null,a);b.type=a;return b},isValidElement:O,version:"16.7.0",
 unstable_ConcurrentMode:x,unstable_Profiler:u,__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED:{ReactCurrentOwner:K,assign:k}},Y={default:X},Z=Y&&X||Y;module.exports=Z.default||Z;
 
-},{"object-assign":8}],17:[function(require,module,exports){
+},{"object-assign":10}],19:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -23162,7 +23345,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/react.development.js":15,"./cjs/react.production.min.js":16,"_process":9}],18:[function(require,module,exports){
+},{"./cjs/react.development.js":17,"./cjs/react.production.min.js":18,"_process":11}],20:[function(require,module,exports){
 (function (process){
 /** @license React v0.12.0
  * scheduler-tracing.development.js
@@ -23589,7 +23772,7 @@ exports.unstable_unsubscribe = unstable_unsubscribe;
 }
 
 }).call(this,require('_process'))
-},{"_process":9}],19:[function(require,module,exports){
+},{"_process":11}],21:[function(require,module,exports){
 /** @license React v0.12.0
  * scheduler-tracing.production.min.js
  *
@@ -23601,7 +23784,7 @@ exports.unstable_unsubscribe = unstable_unsubscribe;
 
 'use strict';Object.defineProperty(exports,"__esModule",{value:!0});var b=0;exports.__interactionsRef=null;exports.__subscriberRef=null;exports.unstable_clear=function(a){return a()};exports.unstable_getCurrent=function(){return null};exports.unstable_getThreadID=function(){return++b};exports.unstable_trace=function(a,d,c){return c()};exports.unstable_wrap=function(a){return a};exports.unstable_subscribe=function(){};exports.unstable_unsubscribe=function(){};
 
-},{}],20:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 (function (process,global){
 /** @license React v0.12.0
  * scheduler.development.js
@@ -24308,7 +24491,7 @@ exports.unstable_getFirstCallbackNode = unstable_getFirstCallbackNode;
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":9}],21:[function(require,module,exports){
+},{"_process":11}],23:[function(require,module,exports){
 (function (global){
 /** @license React v0.12.0
  * scheduler.production.min.js
@@ -24333,7 +24516,7 @@ b=d.previous;b.next=d.previous=a;a.next=d;a.previous=b}return a};exports.unstabl
 exports.unstable_shouldYield=function(){return!f&&(null!==c&&c.expirationTime<l||w())};exports.unstable_continueExecution=function(){null!==c&&p()};exports.unstable_pauseExecution=function(){};exports.unstable_getFirstCallbackNode=function(){return c};
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],22:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -24344,7 +24527,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/scheduler.development.js":20,"./cjs/scheduler.production.min.js":21,"_process":9}],23:[function(require,module,exports){
+},{"./cjs/scheduler.development.js":22,"./cjs/scheduler.production.min.js":23,"_process":11}],25:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -24355,4 +24538,4 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/scheduler-tracing.development.js":18,"./cjs/scheduler-tracing.production.min.js":19,"_process":9}]},{},[1]);
+},{"./cjs/scheduler-tracing.development.js":20,"./cjs/scheduler-tracing.production.min.js":21,"_process":11}]},{},[1]);

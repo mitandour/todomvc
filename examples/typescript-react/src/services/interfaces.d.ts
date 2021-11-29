@@ -1,3 +1,5 @@
+import { TodoModel } from "./impl/todoModel";
+
 interface ITodo {
 	id: string;
 	title: string;
@@ -13,6 +15,7 @@ interface ITag {
 interface ITodoItemProps {
 	key: string;
 	todo: ITodo;
+	tagModel: ITagModel;
 	editing?: boolean;
 	onSave: (val: any) => void;
 	onDestroy: () => void;
@@ -23,6 +26,20 @@ interface ITodoItemProps {
 
 interface ITodoItemState {
 	editText: string;
+	addingTag: boolean;
+	newLabel: string;
+}
+
+interface ITagItemProps {
+	key: string;
+	tag: ITag;
+	onDestroy: () => void;
+	onEdit: (val: string) => void;
+}
+
+interface ITagItemState {
+	editLabel: string;
+	editingTag: boolean;
 }
 
 interface ITodoFooterProps {
@@ -44,6 +61,15 @@ interface ITodoModel {
 	destroy(todo);
 	save(todoToSave, tagsToSave, text);
 	clearCompleted();
+}
+
+interface ITagModel {
+	key: any;
+	tags: Array<ITag>;
+	todo: ITodo;
+	addTag(title: string);
+	destroy(tag: ITag);
+	edit(tag: ITag, label: string);
 }
 
 interface IAppProps {

@@ -9,6 +9,7 @@
 import * as classNames from "classnames";
 import * as React from "react";
 import { ALL_TODOS, ACTIVE_TODOS, COMPLETED_TODOS } from "../constants";
+import { ITodoFooterProps } from "../services/interfaces";
 import { Utils } from "../utils";
 
 class TodoFooter extends React.Component<ITodoFooterProps, {}> {
